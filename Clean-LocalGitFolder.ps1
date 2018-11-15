@@ -19,21 +19,32 @@ Param(
 $LocalGitProjects = Get-ChildItem -Path $LocalGitFolder -Directory
 
 foreach ($LocalGitProject in $LocalGitProjects) {
-    $Git = Get-ChildItem -Path ($LocalGitProject).FullName -Directory -Force -Name ".git" -Recurse
+    $Git = Get-ChildItem -Path ($LocalGitProject).FullName -Directory -Force -Name ".git"
     if ($Git) {
         Set-Location -Path ($LocalGitProject).FullName
+        Write-Host "-------------------------------------------------"
+        Write-Host  ($LocalGitProject).FullName
+
+        # Switch to default branch
+        $DefaultBranch = git symbolic-ref refs/remotes/origin/HEAD
+        if ($null -ne $DefaultBranch) {
+            git checkout ($DefaultBranch).Split("/")[-1]
+            git pull
+        }
+
         # Delete remote branchs that have been removed from the remote repository.
-        #git remote prune origin
+        git remote prune origin
+
         # Delete local branchs that do not have a remote.
         $LocalBranches = git branch -vv
         foreach ($LocalBranch in $LocalBranches) {
             # If Branch output has gone
             If ($LocalBranch -match "gone") {
-                # Switch to default branch
-                #$ TODO
-                # git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
                 # Get Branch Name only and delete it
-                git branch -d $LocalBranch.Split(" ")[1]
+                $BranchName = $LocalBranch.Split(" ")[2]
+                if (0 -ne ($BranchName).length) {
+                    git branch -D $BranchName
+                }
             }
         }
     }
