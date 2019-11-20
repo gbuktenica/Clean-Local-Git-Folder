@@ -49,3 +49,4 @@ foreach ($LocalGitProject in $LocalGitProjects) {
         }
     }
 }
+Set-Location $PSScriptRoot
