@@ -2,7 +2,7 @@
 .SYNOPSIS
     This PowerShell script will recursively loop through all folders in a path and tidy up old Git Branches.
 
-.PARAMETER [string] LocalGitFolder
+.PARAMETER LocalGitFolder
     The path of the folder that is used to store local Git repositories.
 
 .EXAMPLE
