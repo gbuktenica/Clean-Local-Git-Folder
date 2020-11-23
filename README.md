@@ -9,4 +9,14 @@ This PowerShell script will recursively loop through all folders in a path and t
 
 ## Usage
 
+```powershell
+Clean-LocalGitFolder.ps1
+```
+
+Finds sub directories of "$env:USERPROFILE\source" and prune old Git branches if those directoies have a .git directory.
+
+```powershell
 Clean-LocalGitFolder.ps1 -LocalGitFolder "C:\MyGit"
+```
+
+Finds sub directories of "C:\MyGit" and prune old Git branches if those directoies have a .git directory.
