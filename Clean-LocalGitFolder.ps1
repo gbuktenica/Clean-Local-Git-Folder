@@ -14,7 +14,7 @@
     Change Log : 20181115 Initial Build
 #>
 Param(
-    [Parameter(Position=0)] [string]$LocalGitFolder = "$env:USERPROFILE\.source"
+    [Parameter(Position=0)] [string]$LocalGitFolder = "$env:USERPROFILE\source"
 )
 $LocalGitProjects = Get-ChildItem -Path $LocalGitFolder -Directory
 
