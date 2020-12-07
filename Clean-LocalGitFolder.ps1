@@ -16,14 +16,15 @@
 Param(
     [Parameter(Position=0)] [string]$LocalGitFolder = "$env:USERPROFILE\source"
 )
-$LocalGitProjects = Get-ChildItem -Path $LocalGitFolder -Directory
+$LocalGitProjects = @($LocalGitFolder)
+$LocalGitProjects += (Get-ChildItem -Path $LocalGitFolder -Directory).FullName
 
 foreach ($LocalGitProject in $LocalGitProjects) {
-    $Git = Get-ChildItem -Path ($LocalGitProject).FullName -Directory -Force -Name ".git"
+    $Git = Get-ChildItem -Path $LocalGitProject -Directory -Force -Name ".git"
     if ($Git) {
-        Set-Location -Path ($LocalGitProject).FullName
+        Set-Location -Path $LocalGitProject
         Write-Host "-------------------------------------------------"
-        Write-Host  ($LocalGitProject).FullName
+        Write-Host  $LocalGitProject
 
         # Switch to default branch
         $DefaultBranch = git symbolic-ref refs/remotes/origin/HEAD
