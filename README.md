@@ -5,7 +5,7 @@
 
 ## Overview
 
-This PowerShell script will recursively loop through all folders in a path and tidy up old Git Branches.
+This PowerShell script will recursively loop through all folders in a path and remove local Git Branches that have been removed from the remote.
 
 ## Usage
 
@@ -13,10 +13,16 @@ This PowerShell script will recursively loop through all folders in a path and t
 Clean-LocalGitFolder.ps1
 ```
 
-Finds sub directories of "$env:USERPROFILE\source" and prune old Git branches if those directoies have a .git directory.
+Finds sub directories of "$env:USERPROFILE\source" up to a depth of 2 subfolders and prunes Git branches if those directoies have a .git directory and have been removed from the remote.
 
 ```powershell
 Clean-LocalGitFolder.ps1 -LocalGitFolder "C:\MyGit"
 ```
 
-Finds sub directories of "C:\MyGit" and prune old Git branches if those directoies have a .git directory.
+Finds sub directories of "C:\MyGit" up to a depth of 2 subfolders and prunes Git branches if those directoies have a .git directory and have been removed from the remote.
+
+```powershell
+Clean-LocalGitFolder.ps1 -LocalGitFolder "C:\MyGit" -Depth 1
+```
+
+Finds sub directories of "C:\MyGit" up to a depth of 1 subfolder and prunes Git branches if those directoies have a .git directory and have been removed from the remote.
