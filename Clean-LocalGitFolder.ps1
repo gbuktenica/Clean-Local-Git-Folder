@@ -1,23 +1,55 @@
 <#
 .SYNOPSIS
-    This PowerShell script will recursively loop through all folders in a path and tidy up old Git Branches.
+    This PowerShell script will recursively loop through all folders in a path and remove local Git Branches that have been removed from the remote.
 
 .PARAMETER LocalGitFolder
-    The path of the folder that is used to store local Git repositories.
+    The path of the root folder that is used to store local Git repositories.
+
+.EXAMPLE
+    Clean-LocalGitFolder.ps1
+    Seach for git repositories in <USERPROFILE>\source up to a depth of 2 subfolders
+    e.g. it will search and find:
+    C:\users\glen\source\ProjectA
+    C:\users\glen\source\repos\ProjectB
+    C:\users\glen\source\repos\PrivateProjects\ProjectC
 
 .EXAMPLE
     Clean-LocalGitFolder.ps1 -LocalGitFolder "C:\MyGit"
+    Seach for git repositories in "C:\MyGit" up to a depth of 2 subfolders
+    e.g. it will search and find:
+    C:\MyGit\ProjectA
+    C:\MyGit\repos\ProjectB
+    C:\MyGit\repos\PrivateProjects\ProjectC
+
+.EXAMPLE
+    Clean-LocalGitFolder.ps1 -LocalGitFolder "C:\MyGit" -Depth 1
+    Seach for git repositories in "C:\MyGit" up to a depth of 1 subfolder
+    e.g. it will search and find:
+    C:\MyGit\ProjectA
+    C:\MyGit\repos\ProjectB
+
+    But it will not find
+    C:\MyGit\repos\PrivateProjects\ProjectC
 
 .NOTES
     Author     : Glen Buktenica
     Requires   : PowerShell 3
-    Change Log : 20181115 Initial Build
+    Change Log : 20201209 Depth
 #>
 Param(
-    [Parameter(Position=0)] [string]$LocalGitFolder = "$env:USERPROFILE\source"
+    [Parameter(Position=0)]
+    [string]
+    $LocalGitFolder = "$env:USERPROFILE\source",
+    [int]
+    $Depth = 2
 )
 $LocalGitProjects = @($LocalGitFolder)
-$LocalGitProjects += (Get-ChildItem -Path $LocalGitFolder -Directory).FullName
+if ($PSVersionTable.PSVersion.Major -ge 5 -and $Depth -ge 1) {
+    $LocalGitProjects += (Get-ChildItem -Path $LocalGitFolder -Directory -Depth $Depth).FullName
+} else {
+    $LocalGitProjects += (Get-ChildItem -Path $LocalGitFolder -Directory).FullName
+}
+
 
 foreach ($LocalGitProject in $LocalGitProjects) {
     $Git = Get-ChildItem -Path $LocalGitProject -Directory -Force -Name ".git"
