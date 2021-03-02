@@ -66,7 +66,12 @@ foreach ($LocalGitProject in $LocalGitProjects) {
         }
 
         # Delete remote branchs that have been removed from the remote repository.
-        git remote prune origin
+        $Remotes = git remote
+        if ($null -ne $Remotes) {
+            foreach ($Remote in $Remotes) {
+                git remote prune $Remote
+            }
+        }
 
         # Delete local branchs that do not have a remote.
         $LocalBranches = git branch -vv
