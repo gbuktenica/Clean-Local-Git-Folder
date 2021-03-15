@@ -34,8 +34,9 @@
 .NOTES
     Author     : Glen Buktenica
     Requires   : PowerShell 3
-    Change Log : 20201209 Depth
+    Change Log : 20210315 CmdletBinding
 #>
+[CmdletBinding()]
 Param(
     [Parameter(Position=0)]
     [string]
