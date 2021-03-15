@@ -44,6 +44,11 @@ Param(
     [int]
     $Depth = 2
 )
+Write-Verbose "LocalGitFolder = $LocalGitFolder"
+If (!(Test-Path $LocalGitFolder)) {
+    Write-Error "Path: $LocalGitFolder - Not found" -ErrorAction Stop
+}
+
 $LocalGitProjects = @($LocalGitFolder)
 if ($PSVersionTable.PSVersion.Major -ge 5 -and $Depth -ge 1) {
     $LocalGitProjects += (Get-ChildItem -Path $LocalGitFolder -Directory -Depth $Depth).FullName

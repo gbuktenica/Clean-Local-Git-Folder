@@ -6,18 +6,29 @@
             "type": "PowerShell",
             "request": "launch",
             "script": "${workspaceFolder}/Clean-LocalGitFolder.ps1",
+            "args": [
+                "-Verbose"
+            ],
             "cwd": "${workspaceFolder}"
         },
         {
-            "name": "Clean Source",
+            "name": "Clean Input",
             "type": "PowerShell",
             "request": "launch",
             "script": "${workspaceFolder}/Clean-LocalGitFolder.ps1",
             "cwd": "${workspaceFolder}",
             "args": [
                 "-Verbose",
-                "-LocalGitFolder $env:USERPROFILE/source"
+                "${input:args}"
             ],
+        }
+    ],
+    "inputs": [
+        {
+            "id": "args",
+            "type": "promptString",
+            "description": "Prompt for LocalGitFolder",
+            "default": "-LocalGitFolder $env:USERPROFILE/source/"
         }
     ]
 }
