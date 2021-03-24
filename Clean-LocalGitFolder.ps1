@@ -7,7 +7,7 @@
 
 .EXAMPLE
     Clean-LocalGitFolder.ps1
-    Seach for git repositories in <USERPROFILE>\source up to a depth of 2 subfolders
+    Search for git repositories in <USERPROFILE>\source up to a depth of 2 subfolders
     e.g. it will search and find:
     C:\users\glen\source\ProjectA
     C:\users\glen\source\repos\ProjectB
@@ -15,7 +15,7 @@
 
 .EXAMPLE
     Clean-LocalGitFolder.ps1 -LocalGitFolder "C:\MyGit"
-    Seach for git repositories in "C:\MyGit" up to a depth of 2 subfolders
+    Search for git repositories in "C:\MyGit" up to a depth of 2 subfolders
     e.g. it will search and find:
     C:\MyGit\ProjectA
     C:\MyGit\repos\ProjectB
@@ -23,7 +23,7 @@
 
 .EXAMPLE
     Clean-LocalGitFolder.ps1 -LocalGitFolder "C:\MyGit" -Depth 1
-    Seach for git repositories in "C:\MyGit" up to a depth of 1 subfolder
+    Search for git repositories in "C:\MyGit" up to a depth of 1 subfolder
     e.g. it will search and find:
     C:\MyGit\ProjectA
     C:\MyGit\repos\ProjectB
@@ -71,7 +71,7 @@ foreach ($LocalGitProject in $LocalGitProjects) {
             git pull
         }
 
-        # Delete remote branchs that have been removed from the remote repository.
+        # Delete remote branches that have been removed from the remote repository.
         $Remotes = git remote
         if ($null -ne $Remotes) {
             foreach ($Remote in $Remotes) {
@@ -79,7 +79,7 @@ foreach ($LocalGitProject in $LocalGitProjects) {
             }
         }
 
-        # Delete local branchs that do not have a remote.
+        # Delete local branches that do not have a remote.
         $LocalBranches = git branch -vv
         foreach ($LocalBranch in $LocalBranches) {
             # If Branch output has gone
