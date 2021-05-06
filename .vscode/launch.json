@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Clean Default",
+            "name": "Clean GUI",
             "type": "PowerShell",
             "request": "launch",
             "script": "${workspaceFolder}/Clean-LocalGitFolder.ps1",
@@ -10,6 +10,17 @@
                 "-Verbose"
             ],
             "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Clean Source",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/Clean-LocalGitFolder.ps1",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "-Verbose",
+                "-LocalGitFolder $env:USERPROFILE/source/"
+            ],
         },
         {
             "name": "Clean Input",
