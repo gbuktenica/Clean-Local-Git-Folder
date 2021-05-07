@@ -7,7 +7,8 @@
 
 .EXAMPLE
     Clean-LocalGitFolder.ps1
-    Search for git repositories in <USERPROFILE>\source up to a depth of 2 subfolders
+    Prompt the Operator for a folder with a GUI prompt.
+    Search for git repositories in the selected folder up to a depth of 2 subfolders
     e.g. it will search and find:
     C:\users\glen\source\ProjectA
     C:\users\glen\source\repos\ProjectB
@@ -32,20 +33,37 @@
     C:\MyGit\repos\PrivateProjects\ProjectC
 
 .NOTES
-    Author     : Glen Buktenica
-    Requires   : PowerShell 3
-    Change Log : 20210315 CmdletBinding
+    License      : MIT License
+    Copyright (c): 2021 Glen Buktenica
+    Release      : v2.0.0 20210506
 #>
 [CmdletBinding()]
 Param(
     [Parameter(Position=0)]
     [string]
-    $LocalGitFolder = "$env:USERPROFILE\source",
+    $LocalGitFolder,
     [int]
     $Depth = 2
 )
+
+if ($LocalGitFolder.length -eq 0) {
+    Write-Verbose "`$LocalGitFolder is null so prompt operator for folder path."
+    # Check that GUI dependencies are installed.
+    # If dependencies are missing and can be installed then do so.
+    if (-not (Get-Module -Name "FileSystemForms")) {
+        if (((Get-PackageProvider -Name nuget -ErrorAction SilentlyContinue).version) -lt [version]"2.8.5.201") {
+            Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+        }
+        if (-not (Get-PSRepository -Name PSGallery)) {
+            Register-PSRepository -Default
+        }
+        Install-Module -Name FileSystemForms -ErrorAction Stop
+    }
+    $LocalGitFolder = Select-FileSystemForm -Start "$env:USERPROFILE\source"
+}
+
 Write-Verbose "LocalGitFolder = $LocalGitFolder"
-If (!(Test-Path $LocalGitFolder)) {
+if (!(Test-Path $LocalGitFolder)) {
     Write-Error "Path: $LocalGitFolder - Not found" -ErrorAction Stop
 }
 
@@ -83,7 +101,7 @@ foreach ($LocalGitProject in $LocalGitProjects) {
         $LocalBranches = git branch -vv
         foreach ($LocalBranch in $LocalBranches) {
             # If Branch output has gone
-            If ($LocalBranch -match "gone") {
+            if ($LocalBranch -match "gone") {
                 # Get Branch Name only and delete it
                 $BranchName = $LocalBranch.Split(" ")[2]
                 if (0 -ne ($BranchName).length) {
