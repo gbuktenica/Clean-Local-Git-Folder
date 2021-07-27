@@ -1,13 +1,27 @@
 #!/bin/sh
+# This precommit hook stops accidental commits to protected branches master and main
 
-branch="$(git rev-parse --abbrev-ref HEAD)"
+# To install, run:
+#     git config --local core.hooksPath .githooks/
 
-if [ "$branch" = "main" ]; then
-  echo "You can't commit directly to the $branch branch"
+# To confirm that it is set, run:
+#     git config --local --get core.hooksPath
+
+# If you are reading this after a failed commit and local main needs to be reset to the remote:
+#     git remote
+#     git fetch [remote]
+#     git reset --hard [remote]/[branch]
+
+# Example
+#    git fetch origin
+#    git reset --hard origin/main
+
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+
+if [[ "$BRANCH" =~ ^(master|main)$ ]]; then
+  echo "You are on branch $BRANCH. Are you sure you want to commit to this branch?"
+  echo "If so, commit with -n to bypass this pre-commit hook."
   exit 1
 fi
 
-if [ "$branch" = "master" ]; then
-  echo "You can't commit directly to the $branch branch"
-  exit 1
-fi
+exit 0
