@@ -1,11 +1,16 @@
 #!/bin/sh
 # This precommit hook stops accidental commits to protected branches master and main
 
-# To install, run:
+# To install for this repository, run:
 #     git config --local core.hooksPath .githooks/
 
 # To confirm that it is set, run:
 #     git config --local --get core.hooksPath
+
+# To install for globally, run:
+#   mkdir -p ~/.git-templates/hooks
+#   cp ./.githooks/pre-commit ~/.git-templates/hooks
+#   git config --global core.hooksPath '~/.git-template/hooks'
 
 # If you are reading this after a failed commit and local main needs to be reset to the remote:
 #     git remote
