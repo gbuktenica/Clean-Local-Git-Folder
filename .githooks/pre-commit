@@ -10,7 +10,7 @@
 # To install for globally, run:
 #   mkdir -p ~/.git-templates/hooks
 #   cp ./.githooks/pre-commit ~/.git-templates/hooks
-# run "git init" for any existing local repositories
+#   git config --global core.hooksPath '~/.git-template/hooks'
 
 # If you are reading this after a failed commit and local main needs to be reset to the remote:
 #     git remote
