@@ -35,7 +35,7 @@
 .NOTES
     License      : MIT License
     Copyright (c): 2021 Glen Buktenica
-    Release      : v2.0.0 20210506
+    Release      : v2.0.1 2021 11 05
 #>
 [CmdletBinding()]
 Param(
@@ -69,14 +69,14 @@ if (!(Test-Path $LocalGitFolder)) {
 
 $LocalGitProjects = @($LocalGitFolder)
 if ($PSVersionTable.PSVersion.Major -ge 5 -and $Depth -ge 1) {
-    $LocalGitProjects += (Get-ChildItem -Path $LocalGitFolder -Directory -Depth $Depth).FullName
+    $LocalGitProjects += (Get-ChildItem -Path $LocalGitFolder -Directory -Depth $Depth -ErrorAction SilentlyContinue).FullName
 } else {
-    $LocalGitProjects += (Get-ChildItem -Path $LocalGitFolder -Directory).FullName
+    $LocalGitProjects += (Get-ChildItem -Path $LocalGitFolder -Directory -ErrorAction SilentlyContinue).FullName
 }
 
 
 foreach ($LocalGitProject in $LocalGitProjects) {
-    $Git = Get-ChildItem -Path $LocalGitProject -Directory -Force -Name ".git"
+    $Git = Get-ChildItem -Path $LocalGitProject -Directory -Force -Name ".git" -ErrorAction SilentlyContinue
     if ($Git) {
         Set-Location -Path $LocalGitProject
         Write-Host "-------------------------------------------------"
